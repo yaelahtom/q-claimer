@@ -10,6 +10,9 @@ const API_KEY = ''
 const UID = ''
 const lang = 'en'
 
+// wallet
+const wallet = '0x'
+
 async function main() {
   const browser = await puppeteer.launch({
     headless: false,
@@ -29,11 +32,13 @@ async function main() {
   })
 
   const page = await browser.newPage()
+  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+
   await page.goto('https://faucet.qtestnet.org/', { waitUntil: 'networkidle2' })
 
   // input element
   const input = await page.waitForSelector('input[type="text"]')
-  await input.type('q address')
+  await input.type(wallet)
 
   // bypass hCaptcha
   await solveCaptcha(page, API_KEY, UID, 'free', true)
